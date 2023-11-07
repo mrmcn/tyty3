@@ -2,23 +2,24 @@ import { ThemeProvider } from '@emotion/react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import Diversity2Icon from '@mui/icons-material/Diversity2'
 import MenuIcon from '@mui/icons-material/Menu'
+import SearchIcon from '@mui/icons-material/Search'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import IconButton from '@mui/material/IconButton'
+import Input from '@mui/material/Input'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { Suspense, useState } from 'react'
 import { Await, Outlet, useLoaderData } from 'react-router-dom'
-import ErrorElement from '../../components/common/errorAwaitElement'
-import SearchBar from '../../components/common/searchBar'
-import Cart from '../../components/routes/cart'
-import CategoriesMenu from '../../components/routes/categoriesMenu'
-import NavBar from '../../components/routes/navBar'
-import SingIn from '../../components/routes/singIn'
-import SingUp from '../../components/routes/singUp'
+import ErrorElement from '../../common/errorAwaitElement'
+import Cart from './components/cart'
+import CategoriesMenu from './components/categoriesMenu'
+import NavBar from './components/navBar'
+import SingIn from './components/singIn'
+import SingUp from './components/singUp'
 import FallbackCategories from './fallbackCategories'
 import { headerOneStyles } from './styles'
 import theme from './theme'
@@ -74,6 +75,7 @@ const Root = () => {
                     <CategoriesMenu />
                     <NavBar
                       token={token}
+                      setToken={setToken}
                       state={stateNavBar}
                       toggleDrawer={toggleDrawer}
                       setOpenSingUp={setOpenSingUp}
@@ -84,12 +86,16 @@ const Root = () => {
               </Box>
             </Box>
             <Card>
-              <SearchBar
-                contentButon={'search'}
-                variantButton={'text'}
-                sizeButton={'small'}
-                boxColor={'inherit'}
-              />
+              <Box color='inherit'>
+                <SearchIcon />
+                <Input></Input>
+                <Button
+                  size='small'
+                  variant='text'
+                >
+                  search
+                </Button>
+              </Box>
             </Card>
             {token ? (
               <Box>

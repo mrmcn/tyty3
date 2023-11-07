@@ -1,4 +1,5 @@
 import DatasetIcon from '@mui/icons-material/Dataset'
+import LogoutIcon from '@mui/icons-material/Logout'
 import PeopleIcon from '@mui/icons-material/People'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import Button from '@mui/material/Button'
@@ -18,9 +19,16 @@ import {
   helpNavBarItems,
   mainNavBarItems,
   otherNavBarItems,
-} from '../../data/root/navBarItems'
+} from '../../../data/root/navBarItems'
 
-function NavBar({ token, state, toggleDrawer, setOpenSingUp, setOpenCart }) {
+function NavBar({
+  token,
+  setToken,
+  state,
+  toggleDrawer,
+  setOpenSingUp,
+  setOpenCart,
+}) {
   const navigate = useNavigate()
   const categories = useAsyncValue()
   const [anchorEl, setAnchorEl] = useState(null)
@@ -155,6 +163,24 @@ function NavBar({ token, state, toggleDrawer, setOpenSingUp, setOpenCart }) {
             </ListItemButton>
           </ListItem>
         ))}
+      </List>
+      <List
+        onClick={toggleDrawer(false)}
+        onKeyDown={toggleDrawer(false)}
+      >
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
+              setToken('')
+              localStorage.clear()
+            }}
+          >
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText>Log Out</ListItemText>
+          </ListItemButton>
+        </ListItem>
       </List>
     </Drawer>
   )

@@ -1,7 +1,7 @@
 import { defer } from 'react-router-dom'
 import { queryClient } from '../index.'
 
-export const loaderCategories = ({ params }) => {
+export const loaderCategories = () => {
   return defer({
     categories: queryClient.fetchQuery({
       queryKey: ['categories'],
@@ -11,6 +11,7 @@ export const loaderCategories = ({ params }) => {
         )
         return response.json()
       },
+      // staleTime: 1000 * 20,
     }),
   })
 }

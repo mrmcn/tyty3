@@ -1,9 +1,9 @@
-import { Await, useLoaderData } from 'react-router-dom'
 import { Suspense } from 'react'
-import ErrorElement from '../../../components/common/errorAwaitElement'
+import { Await, useLoaderData } from 'react-router-dom'
+import ErrorElement from '../../../common/errorAwaitElement'
+import BasicBreadcrumbs from './components/braedCrumbs'
+import BasicTabs from './components/tabs'
 import FallbackProduct from './fallbackProduct'
-import BasicBreadcrumbs from '../../../components/product/braedCrumbs'
-import BasicTabs from '../../../components/product/tabs'
 
 const Product = () => {
   const { product } = useLoaderData()

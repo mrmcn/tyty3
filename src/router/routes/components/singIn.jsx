@@ -1,37 +1,45 @@
+import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import Checkbox from '@mui/material/Checkbox'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
-import TextField from '@mui/material/TextField'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
 import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
-import { useState } from 'react'
+import Grid from '@mui/material/Grid'
+import TextField from '@mui/material/TextField'
+import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import { useState } from 'react'
 
-export default function SingIn({ token, setToken, openSingIn, setOpenSingIn }) {
+export default function SingIn({ setToken, openSingIn, setOpenSingIn }) {
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
-  const onSubmit = () => {
-    setUserName('')
-    setPassword('')
-    axios({
-      method: 'post',
-      url: 'https://fakestoreapi.com/auth/login',
-      data: {
-        username: userName,
-        password: password,
-      },
-    })
-      .then((res) => {
-        setToken(res.data.token)
-        localStorage.setItem('userToken', res.data.token)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+  const [open, setOpen] = useState(false)
+
+  const { data, isPending, isError, isSuccess } = useQuery({
+    queryKey: ['token'],
+    queryFn: async () =>
+      await axios({
+        method: 'post',
+        url: 'https://fakestoreapi.com/auth/login',
+        data: {
+          username: userName,
+          password: password,
+        },
+      }),
+    enabled: open,
+    select: ({ data }) => data.token,
+  })
+  if (isPending) {
+    return <h3>Sing In...</h3>
+  }
+  if (isError) {
+    return <h3>Error {isError}</h3>
+  }
+  if (isSuccess) {
+    setToken(data)
+    localStorage.setItem('userToken', data)
   }
 
   return (
@@ -46,7 +54,6 @@ export default function SingIn({ token, setToken, openSingIn, setOpenSingIn }) {
         <Box
           component='form'
           noValidate
-          // onSubmit={handleSubmit}
           sx={{ mt: 3 }}
         >
           <Grid
@@ -66,10 +73,8 @@ export default function SingIn({ token, setToken, openSingIn, setOpenSingIn }) {
                 id='username'
                 label='User Name'
                 autoFocus
-                // value={userName}
                 onChange={(e) => {
                   setUserName(e.target.value)
-                  console.log(e.target.value)
                 }}
               />
             </Grid>
@@ -87,7 +92,6 @@ export default function SingIn({ token, setToken, openSingIn, setOpenSingIn }) {
                 autoComplete='new-password'
                 onChange={(e) => {
                   setPassword(e.target.value)
-                  console.log(e.target.value)
                 }}
               />
             </Grid>
@@ -115,20 +119,79 @@ export default function SingIn({ token, setToken, openSingIn, setOpenSingIn }) {
           variant='contained'
           sx={{ mt: 3, mb: 2 }}
           onClick={() => {
+            setOpen(true)
             setOpenSingIn(false)
-            onSubmit()
           }}
           autoFocus
         >
           Sign In
         </Button>
-        <Button
-          // onClick={() => setOpenSingIn(false)}
-          autoFocus
-        >
-          Agree
-        </Button>
       </DialogActions>
     </Dialog>
   )
 }
+
+// async function onSubmit() {
+//   setUserName('')
+//   setPassword('')
+//   try {
+//     const response = await fetch('https://fakestoreapi.com/auth/login', {
+//       method: 'POST',
+//       data: {
+//         username: userName,
+//         password: password,
+//       },
+//     })
+//     setToken(response.data.token)
+//     localStorage.setItem('userToken', response.data.token)
+//   } catch (error) {
+//     console.log('error = ' + error)
+//     return <div>Error {error}</div>
+//   }
+// }
+// const onSubmit = async () => {
+//   try {
+//     setIsLoading(true)
+//     const response = await axios({
+//       method: 'post',
+//       url: 'https://fakestoreapi.com/auth/login',
+//       data: {
+//         username: userName,
+//         password: password,
+//       },
+//     })
+//     setToken(response.data.token)
+//     setIsLoading(false)
+//     localStorage.setItem('userToken', response.data.token)
+//   } catch (error) {
+//     console.log('error = ' + error)
+//     setIsError(error)
+//     return <div>Error {error}</div>
+//   } finally {
+//     setUserName('')
+//     setPassword('')
+//   }
+// }
+
+// if (!token) {
+//   return <h3>No data</h3>
+// }
+// const onSubmit = () => {
+//   setUserName('')
+//   setPassword('')
+//   axios({
+//     method: 'post',
+//     url: 'https://fakestoreapi.com/auth/login',
+//     data: {
+//       username: userName,
+//       password: password,
+//     },
+//   })
+//     .then((res) => {
+//       setToken(res.data.token)
+//       localStorage.setItem('userToken', res.data.token)
+//     })
+//     .catch(function (error) {
+//       console.log(error)
+//     })
+// }

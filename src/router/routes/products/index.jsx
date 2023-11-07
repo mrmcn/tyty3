@@ -1,15 +1,15 @@
-import Grid from '@mui/material/Grid'
+import { CardActionArea } from '@mui/material'
 import Card from '@mui/material/Card'
-import Tooltip from '@mui/material/Tooltip'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
+import Grid from '@mui/material/Grid'
+import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import { CardActionArea } from '@mui/material'
+import { nanoid } from 'nanoid'
 import { Suspense } from 'react'
 import { Await, useLoaderData } from 'react-router-dom'
-import { nanoid } from 'nanoid'
+import ErrorElement from '../../../common/errorAwaitElement'
 import FallbackProducts from './fallbackProducts'
-import ErrorElement from '../../../components/common/errorAwaitElement'
 
 const Products = () => {
   const { products } = useLoaderData()
